@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "Sahayak - AI Auto-Fill Engine",
+  "version": "1.0.0",
+  "description": "Auto-fills complex multi-page government welfare applications from verified citizen DigiLocker profiles.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://localhost:5173/*",
+    "http://127.0.0.1:5173/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Sahayak Auto-Fill Controller",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "externally_connectable": {
+    "matches": [
+      "http://localhost:5173/*",
+      "http://127.0.0.1:5173/*",
+      "http://localhost:*/*",
+      "http://127.0.0.1:*/*",
+      "https://*.vercel.app/*"
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "styles.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

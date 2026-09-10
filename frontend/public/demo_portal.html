@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>National Welfare & Scheme Citizen Application Portal (Demo)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .field-autofilled {
+      border-color: #10b981 !important;
+      background-color: #ecfdf5 !important;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+    }
+    .pulse-btn {
+      animation: pulse-ring 2s infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 antialiased font-sans pb-16">
+  
+  <!-- Gov Portal Header -->
+  <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950 text-white shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-950 font-bold text-lg">
+          🏛️
+        </div>
+        <div>
+          <h1 class="text-sm sm:text-base font-bold tracking-wide">
+            NATIONAL WELFARE & SCHEME CITIZEN APPLICATION PORTAL
+          </h1>
+          <p class="text-[11px] text-blue-200">
+            Government of India • Ministry of Electronics & IT
+          </p>
+        </div>
+      </div>
+      <div class="text-right hidden sm:block">
+        <span class="text-xs bg-blue-800/80 px-2.5 py-1 rounded border border-blue-700 font-mono">
+          REF: SIH-2024-DEMO
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notice Banner -->
+  <div class="bg-amber-50 border border-amber-200 px-4 py-2.5 text-xs text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-5xl mx-auto mt-4 rounded-xl gap-2">
+    <div class="flex items-center space-x-2">
+      <span class="font-bold">⚡ Sahayak Test Portal:</span>
+      <span>This form simulates an official multi-page government application (e.g. PM-Kisan, Post-Matric Scholarship).</span>
+    </div>
+    <div id="sessionBannerBadge" class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-800 border border-orange-200">
+      Checking Sahayak Session...
+    </div>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+    <form id="govApplicationForm" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
+        <div>
+          <h2 class="text-lg font-extrabold text-slate-900">
+            Citizen Application & Scheme Enrollment Form
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Fields highlighted in green indicate verified attributes auto-filled by Sahayak.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="btnTriggerPortalAutoFill"
+          class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-md shadow-orange-600/20 transition-all flex items-center justify-center space-x-1.5 pulse-btn flex-shrink-0"
+        >
+          <span>⚡ Auto-Fill with Sahayak</span>
+        </button>
+      </div>
+
+      <!-- Section 1: Personal Details -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
+          <span>1. Personal & Identity Details</span>
+        </h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+          <div>
+            <label for="applicant_name" class="block font-semibold text-slate-700 mb-1">
+              Full Name (as in Aadhaar) *
+            </label>
+            <input
+              type="text"
+              id="applicant_name"
+              name="full_name"
+              placeholder="e.g. Rameshwar Kumar Sharma"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="aadhaar_no" class="block font-semibold text-slate-700 mb-1">
+              Aadhaar Number (UID) *
+            </label>
+            <input
+              type="text"
+              id="aadhaar_no"
+              name="aadhaar_number"
+              placeholder="XXXX-XXXX-XXXX"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 font-mono"
+            />
+          </div>
+
+          <div>
+            <label for="dob" class="block font-semibold text-slate-700 mb-1">
+              Date of Birth (YYYY-MM-DD) *
+            </label>
+            <input
+              type="text"
+              id="dob"
+              name="date_of_birth"
+              placeholder="YYYY-MM-DD"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="gender" class="block font-semibold text-slate-700 mb-1">
+              Gender *
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="father_name" class="block font-semibold text-slate-700 mb-1">
+              Father's / Husband's Name *
+            </label>
+            <input
+              type="text"
+              id="father_name"
+              name="father_name"
+              placeholder="Father / Guardian Name"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="mobile_number" class="block font-semibold text-slate-700 mb-1">
+              Mobile Number (Aadhaar linked) *
+            </label>
+            <input
+              type="tel"
+              id="mobile_number"
+              name="mobile"
+              placeholder="10-digit mobile number"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Address Details -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
+          <span>2. Address & Domicile</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="sm:col-span-2">
+            <label for="residential_address" class="block font-semibold text-slate-700 mb-1">
+              Permanent Residential Address *
+            </label>
+            <input
+              type="text"
+              id="residential_address"
+              name="full_address"
+              placeholder="House No, Village/Ward, Tehsil"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="state_name" class="block font-semibold text-slate-700 mb-1">
+              State / UT *
+            </label>
+            <input
+              type="text"
+              id="state_name"
+              name="state"
+              placeholder="e.g. Uttar Pradesh"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="district_name" class="block font-semibold text-slate-700 mb-1">
+              District *
+            </label>
+            <input
+              type="text"
+              id="district_name"
+              name="district"
+              placeholder="e.g. Varanasi"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="pincode" class="block font-semibold text-slate-700 mb-1">
+              Postal PIN Code *
+            </label>
+            <input
+              type="text"
+              id="pincode"
+              name="pincode"
+              placeholder="6-digit PIN"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Socio-Economic & Document Verification Details -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
+          <span>3. Socio-Economic Criteria & Certificate Numbers</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div>
+            <label for="social_category" class="block font-semibold text-slate-700 mb-1">
+              Social Category (Caste) *
+            </label>
+            <input
+              type="text"
+              id="social_category"
+              name="category"
+              placeholder="General / OBC / SC / ST / EWS"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="annual_income" class="block font-semibold text-slate-700 mb-1">
+              Gross Annual Income (₹) *
+            </label>
+            <input
+              type="number"
+              id="annual_income"
+              name="annual_income"
+              placeholder="e.g. 180000"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 font-mono"
+            />
+          </div>
+
+          <div>
+            <label for="occupation" class="block font-semibold text-slate-700 mb-1">
+              Primary Occupation *
+            </label>
+            <input
+              type="text"
+              id="occupation"
+              name="occupation"
+              placeholder="Farmer / Student / Business"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label for="land_acres" class="block font-semibold text-slate-700 mb-1">
+              Landholding (in Acres)
+            </label>
+            <input
+              type="number"
+              step="0.1"
+              id="land_acres"
+              name="landholding_acres"
+              placeholder="e.g. 2.5"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 font-mono"
+            />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="income_cert_no" class="block font-semibold text-slate-700 mb-1">
+              DigiLocker Income Certificate Number
+            </label>
+            <input
+              type="text"
+              id="income_cert_no"
+              name="income_cert_no"
+              placeholder="UP/REV/INC/XXXX/XXXXXX"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 font-mono"
+            />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="caste_cert_no" class="block font-semibold text-slate-700 mb-1">
+              DigiLocker Caste Certificate Number
+            </label>
+            <input
+              type="text"
+              id="caste_cert_no"
+              name="caste_cert_no"
+              placeholder="UP/REV/CST/XXXX/XXXXXX"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 font-mono"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Actions -->
+      <div class="border-t border-slate-200 pt-5 flex items-center justify-between">
+        <button
+          type="reset"
+          class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-semibold"
+        >
+          Clear Form
+        </button>
+
+        <button
+          type="button"
+          onclick="alert('Application submitted successfully to official verification queue!');"
+          class="px-6 py-2.5 rounded-xl bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold shadow-md"
+        >
+          Submit Scheme Application
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    function checkSession() {
+      const badge = document.getElementById('sessionBannerBadge');
+      try {
+        const raw = localStorage.getItem('sahayak_autofill_session');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.citizen) {
+            badge.textContent = `Ready: ${parsed.citizen.fullName} (${parsed.scheme?.title || 'Welfare Scheme'})`;
+            badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300';
+            return parsed;
+          }
+        }
+      } catch (e) {}
+      badge.textContent = 'No Active Session (Default Mock Ready)';
+      return null;
+    }
+
+    function doLocalAutoFill(customPayload) {
+      let session = customPayload || checkSession();
+      if (!session) {
+        session = {
+          scheme: { title: "PM-Kisan Samman Nidhi" },
+          citizen: {
+            fullName: "Rameshwar Kumar Sharma",
+            aadhaarMasked: "XXXX-XXXX-XXXX",
+            dob: "1994-08-15",
+            gender: "Male",
+            fatherName: "Ramdas Sharma",
+            mobile: "[Phone Redacted]",
+            address: "House No. 42-B, Gram Panchayat Rampur, Bilaspur, Varanasi, Uttar Pradesh - 221001",
+            state: "Uttar Pradesh",
+            district: "Varanasi",
+            pincode: "221001",
+            annualIncome: 160000,
+            socialCategory: "OBC",
+            occupation: "Farmer",
+            landholdingAcres: 2.5,
+            incomeCertNo: "UP/REV/INC/XXXX/XXXXXX",
+            casteCertNo: "UP/REV/CST/XXXX/XXXXXX"
+          }
+        };
+      }
+
+      const c = session.citizen;
+      const mapping = {
+        'applicant_name': c.fullName,
+        'aadhaar_no': c.aadhaarMasked,
+        'dob': c.dob,
+        'gender': c.gender,
+        'father_name': c.fatherName,
+        'mobile_number': c.mobile,
+        'residential_address': c.address,
+        'state_name': c.state,
+        'district_name': c.district,
+        'pincode': c.pincode,
+        'social_category': c.socialCategory,
+        'annual_income': c.annualIncome,
+        'occupation': c.occupation,
+        'land_acres': c.landholdingAcres,
+        'income_cert_no': c.incomeCertNo,
+        'caste_cert_no': c.casteCertNo
+      };
+
+      let count = 0;
+      Object.keys(mapping).forEach(id => {
+        const el = document.getElementById(id);
+        if (el && mapping[id] !== undefined) {
+          el.value = mapping[id];
+          el.classList.add('field-autofilled');
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+          count++;
+        }
+      });
+
+      console.log(`[Demo Portal] Injected ${count} fields.`);
+    }
+
+    document.getElementById('btnTriggerPortalAutoFill')?.addEventListener('click', () => {
+      doLocalAutoFill();
+    });
+
+    // Run on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const session = checkSession();
+      if (session) {
+        setTimeout(() => doLocalAutoFill(session), 200);
+      }
+    });
+  </script>
+</body>
+</html>

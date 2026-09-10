@@ -1,0 +1,12 @@
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+
+# Build directories and dependencies
+node_modules/
+target/
+dist/
+dist-ssr/
+*.local
+.DS_Store

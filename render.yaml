@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: sahayak-backend
+    env: rust
+    rootDir: backend
+    buildCommand: cargo build --release
+    startCommand: ./target/release/sahayak-backend
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: PORT
+        value: 10000

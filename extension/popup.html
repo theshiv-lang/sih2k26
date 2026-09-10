@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahayak Extension Popup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      width: 320px;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .field-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .field-label {
+      color: #64748b;
+    }
+    .field-value {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: #ea580c;
+      color: white;
+      box-shadow: 0 2px 4px rgba(234, 88, 12, 0.25);
+    }
+    .btn-primary:hover {
+      background: #c2410c;
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+      margin-top: 6px;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .footer {
+      font-size: 10px;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo-icon">सं</div>
+      <div>
+        <div class="title">Sahayak</div>
+        <div style="font-size: 10px; color: #64748b;">Auto-Fill Engine</div>
+      </div>
+    </div>
+    <div class="badge" id="statusBadge">Active</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Loaded Citizen Credentials</div>
+    <div class="field-row">
+      <span class="field-label">Name:</span>
+      <span class="field-value" id="cardName">Rameshwar Sharma</span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Aadhaar:</span>
+      <span class="field-value" id="cardAadhaar">XXXX-XXXX-4812</span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Annual Income:</span>
+      <span class="field-value" id="cardIncome" style="color: #047857;">₹1,80,000</span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Category:</span>
+      <span class="field-value" id="cardCategory">OBC (Tehsildar Verified)</span>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" id="btnAutofillCurrentTab">
+    ⚡ Auto-Fill Active Portal Tab
+  </button>
+
+  <button class="btn btn-secondary" id="btnOpenSahayak">
+    Open Sahayak Web App ↗
+  </button>
+
+  <div class="footer">
+    Smart India Hackathon • Manifest V3
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+
+# Cargo build output
+target/
+**/*.rs.bk
+Cargo.lock
