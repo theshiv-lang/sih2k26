@@ -61,17 +61,21 @@ pub async fn handle_chat(Json(req): Json<ChatRequest>) -> impl IntoResponse {
         "en"
     });
 
-    // 2. If message is not English, use Bhashini to translate it to English first (if online)
-    let english_query = if source_lang != "en" {
-        if let Some(translated_en) = crate::services::translate_text(&req.message, source_lang, "en").await {
-            translated_en
-        } else {
-            // IntentParser natively supports multilingual keywords as well
-            req.message.clone()
-        }
+    // 2. Translate/normalize message to English for IntentParser (via live Bhashini or Mock Bhashini)
+    let english_query = if let Some(translated_en) = crate::services::translate_text(&req.message, source_lang, "en").await {
+        translated_en
     } else {
         req.message.clone()
     };
+
+    println!("╔══════════════════════════════════════════════════════════╗");
+    println!("║       🤖 SAHAYAK AI CHAT (INTENT & SCHEME MATCHER)      ║");
+    println!("╠══════════════════════════════════════════════════════════╣");
+    println!("║  User Query:        {:<37} ║", req.message);
+    println!("║  Source Lang:       {:<37} ║", source_lang);
+    println!("║  Target Lang:       {:<37} ║", target_lang);
+    println!("║  Inference Query:   {:<37} ║", english_query);
+    println!("╚══════════════════════════════════════════════════════════╝");
 
     // 3. Connect AI to SchemeMatcher using IntentParser
     let chat_response = crate::services::match_schemes_from_query(

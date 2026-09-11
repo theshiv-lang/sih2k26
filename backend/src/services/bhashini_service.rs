@@ -53,9 +53,159 @@ fn get_suggestions_for_lang(lang: &str) -> Vec<String> {
     }
 }
 
+/// Generate a mock Bhashini ULCA pipeline response adhering strictly to the official schema.
+/// Used when BHASHINI_API_KEY is missing or empty to simulate real AI inference.
+pub fn generate_mock_bhashini_pipeline_response(
+    text: &str,
+    source_lang: &str,
+    target_lang: &str,
+) -> serde_json::Value {
+    let lower = text.to_lowercase();
+
+    // Check demographic keywords across English and regional languages
+    let target_translation = if lower.contains("farmer")
+        || lower.contains("kisan")
+        || lower.contains("farming")
+        || lower.contains("agriculture")
+        || lower.contains("crop")
+        || lower.contains("land")
+        || lower.contains("acres")
+        || lower.contains("cultivator")
+        || lower.contains("किसान")
+        || lower.contains("खेती")
+        || lower.contains("விவசாயி")
+        || lower.contains("రైతు")
+        || lower.contains("কৃষক")
+        || lower.contains("शेतकरी")
+    {
+        if target_lang == "en" {
+            "I am a farmer with 2 acres of agricultural land looking for PM-Kisan and crop support schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("student")
+        || lower.contains("college")
+        || lower.contains("school")
+        || lower.contains("university")
+        || lower.contains("scholarship")
+        || lower.contains("study")
+        || lower.contains("degree")
+        || lower.contains("matric")
+        || lower.contains("education")
+        || lower.contains("छात्र")
+        || lower.contains("विद्यार्थी")
+        || lower.contains("कॉलेज")
+        || lower.contains("மாணவர்")
+        || lower.contains("విద్యార్థి")
+        || lower.contains("ছাত্র")
+    {
+        if target_lang == "en" {
+            "I am an undergraduate college student looking for scholarship and higher education schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("widow")
+        || lower.contains("husband died")
+        || lower.contains("alone")
+        || lower.contains("विधवा")
+        || lower.contains("पति की मृत्यु")
+        || lower.contains("விதவை")
+        || lower.contains("వితంతువు")
+        || lower.contains("বিধবা")
+    {
+        if target_lang == "en" {
+            "I am a widow seeking widow pension and social security schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("girl")
+        || lower.contains("daughter")
+        || lower.contains("sukanya")
+        || lower.contains("बेटी")
+        || lower.contains("कन्या")
+        || lower.contains("பெண் குழந்தை")
+        || lower.contains("బాలిక")
+    {
+        if target_lang == "en" {
+            "I am looking for girl child empowerment and Sukanya Samriddhi schemes for my daughter".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("woman")
+        || lower.contains("female")
+        || lower.contains("lady")
+        || lower.contains("महिला")
+        || lower.contains("स्त्री")
+        || lower.contains("பெண்")
+        || lower.contains("మహిళ")
+    {
+        if target_lang == "en" {
+            "I am a woman looking for female welfare and self-employment schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("senior")
+        || lower.contains("elderly")
+        || lower.contains("retired")
+        || lower.contains("old")
+        || lower.contains("pension")
+        || lower.contains("बुजुर्ग")
+        || lower.contains("वृद्ध")
+        || lower.contains("मुதியோர்")
+        || lower.contains("వృద్ధులు")
+    {
+        if target_lang == "en" {
+            "I am a senior citizen aged 65 seeking old age pension and healthcare schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else if lower.contains("entrepreneur")
+        || lower.contains("business")
+        || lower.contains("startup")
+        || lower.contains("mudra")
+        || lower.contains("loan")
+        || lower.contains("standup")
+        || lower.contains("व्यापार")
+        || lower.contains("उद्यमी")
+    {
+        if target_lang == "en" {
+            "I am an entrepreneur looking for Mudra and Stand-Up India business loan schemes".to_string()
+        } else {
+            text.to_string()
+        }
+    } else {
+        if target_lang == "en" && source_lang != "en" {
+            "Show all eligible government welfare schemes for my profile".to_string()
+        } else {
+            text.to_string()
+        }
+    };
+
+    serde_json::json!({
+        "pipelineResponse": [
+            {
+                "taskType": "translation",
+                "config": {
+                    "language": {
+                        "sourceLanguage": source_lang,
+                        "targetLanguage": target_lang
+                    }
+                },
+                "output": [
+                    {
+                        "source": text,
+                        "target": target_translation
+                    }
+                ]
+            }
+        ]
+    })
+}
+
 /// Translate arbitrary text between source and target language via Bhashini Ulca API
+/// or via Mock Bhashini inference when credentials are not configured.
 pub async fn translate_text(text: &str, source_lang: &str, target_lang: &str) -> Option<String> {
-    if text.trim().is_empty() || source_lang == target_lang {
+    if text.trim().is_empty() {
         return Some(text.to_string());
     }
 
@@ -71,9 +221,35 @@ pub async fn translate_text(text: &str, source_lang: &str, target_lang: &str) ->
     let inference_url = std::env::var("BHASHINI_INFERENCE_URL")
         .unwrap_or_else(|_| "https://dhruva-api.bhashini.gov.in/services/inference/pipeline".to_string());
 
+    // If live Bhashini API keys are empty or missing: bypass external HTTP request entirely and use Mock Bhashini
     if auth_key.trim().is_empty() && ulca_api_key.trim().is_empty() {
-        info!("[Bhashini Translation] No credentials configured in .env. Skipping external translation.");
-        return None;
+        info!("[Mock Bhashini] BHASHINI_API_KEY is unset/empty. Bypassing external ULCA HTTP request and executing Mock Bhashini inference.");
+        let mock_val = generate_mock_bhashini_pipeline_response(text, source_lang, target_lang);
+        let raw_payload_str = serde_json::to_string_pretty(&mock_val).unwrap_or_default();
+
+        println!("╔════════════════════════════════════════════════════════════════╗");
+        println!("║        📡 MOCK BHASHINI ULCA INFERENCE (STANDALONE DEMO)       ║");
+        println!("╠════════════════════════════════════════════════════════════════╣");
+        println!("  Source:          {}", source_lang);
+        println!("  Target:          {}", target_lang);
+        println!("  Bypass:          External Dhruva/ULCA HTTP bypassed (No Key)");
+        println!("  Mock Response:\n{}", raw_payload_str);
+        println!("╚════════════════════════════════════════════════════════════════╝");
+
+        let extracted_target = mock_val
+            .get("pipelineResponse")
+            .and_then(|pr| pr.get(0))
+            .and_then(|task| task.get("output"))
+            .and_then(|out| out.get(0))
+            .and_then(|item| item.get("target"))
+            .and_then(|t| t.as_str())
+            .map(|s| s.to_string());
+
+        return extracted_target;
+    }
+
+    if source_lang == target_lang {
+        return Some(text.to_string());
     }
 
     let payload = serde_json::json!({
@@ -270,6 +446,70 @@ mod tests {
         // In clean test environment without real live government auth tokens, resp is None
         // Verify it executes without panic or crash
         assert!(resp.is_none() || resp.is_some());
+    }
+
+    #[test]
+    fn test_mock_bhashini_schema_structure() {
+        let mock_val = generate_mock_bhashini_pipeline_response("Hello", "en", "en");
+        assert!(mock_val.get("pipelineResponse").is_some());
+        let pipeline_resp = mock_val.get("pipelineResponse").and_then(|pr| pr.get(0)).unwrap();
+        assert_eq!(pipeline_resp.get("taskType").and_then(|t| t.as_str()), Some("translation"));
+        let output = pipeline_resp.get("output").and_then(|o| o.get(0)).unwrap();
+        assert_eq!(output.get("source").and_then(|s| s.as_str()), Some("Hello"));
+        assert!(output.get("target").is_some());
+    }
+
+    #[test]
+    fn test_mock_bhashini_farmer_keyword() {
+        let mock_val = generate_mock_bhashini_pipeline_response("I am a farmer with land", "en", "en");
+        let target = mock_val
+            .get("pipelineResponse")
+            .and_then(|pr| pr.get(0))
+            .and_then(|task| task.get("output"))
+            .and_then(|out| out.get(0))
+            .and_then(|item| item.get("target"))
+            .and_then(|t| t.as_str())
+            .unwrap();
+        assert!(target.to_lowercase().contains("farmer"));
+        assert!(target.to_lowercase().contains("acres"));
+    }
+
+    #[test]
+    fn test_mock_bhashini_student_keyword() {
+        let mock_val = generate_mock_bhashini_pipeline_response("कॉलेज छात्रवृत्ति", "hi", "en");
+        let target = mock_val
+            .get("pipelineResponse")
+            .and_then(|pr| pr.get(0))
+            .and_then(|task| task.get("output"))
+            .and_then(|out| out.get(0))
+            .and_then(|item| item.get("target"))
+            .and_then(|t| t.as_str())
+            .unwrap();
+        assert!(target.to_lowercase().contains("student"));
+        assert!(target.to_lowercase().contains("scholarship"));
+    }
+
+    #[test]
+    fn test_mock_bhashini_widow_keyword() {
+        let mock_val = generate_mock_bhashini_pipeline_response("alone widow", "en", "en");
+        let target = mock_val
+            .get("pipelineResponse")
+            .and_then(|pr| pr.get(0))
+            .and_then(|task| task.get("output"))
+            .and_then(|out| out.get(0))
+            .and_then(|item| item.get("target"))
+            .and_then(|t| t.as_str())
+            .unwrap();
+        assert!(target.to_lowercase().contains("widow"));
+        assert!(target.to_lowercase().contains("pension"));
+    }
+
+    #[tokio::test]
+    async fn test_translate_text_with_mock_bhashini() {
+        let res = translate_text("मैं एक किसान हूँ", "hi", "en").await;
+        assert!(res.is_some());
+        let val = res.unwrap();
+        assert!(val.to_lowercase().contains("farmer"));
     }
 }
 
