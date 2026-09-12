@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../context/AppContext';
 import useStore from '../store/useStore';
 import { X, Zap, CheckCircle2, ArrowUpRight, ExternalLink, ShieldCheck, Copy, Check, Building } from 'lucide-react';
@@ -6,6 +7,7 @@ import { submitSchemeApplication } from '../services/api';
 import { getSafePortalUrl } from './SchemeCard';
 
 export default function AutoFillModal() {
+  const { t } = useTranslation();
   const {
     activeAutofillModal,
     setActiveAutofillModal,
@@ -78,10 +80,10 @@ export default function AutoFillModal() {
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600">
-              Sahayak Auto-Fill Bridge
+              {t('Sahayak Auto-Fill Bridge')}
             </span>
             <h3 className="text-lg font-bold text-slate-900 leading-snug">
-              {scheme.title}
+              {t(scheme.title)}
             </h3>
           </div>
         </div>
@@ -95,7 +97,7 @@ export default function AutoFillModal() {
           <div className="flex items-center space-x-2">
             <div className={`w-2.5 h-2.5 rounded-full ${isExtensionActive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
             <span className="font-semibold">
-              {isExtensionActive ? 'Auto-Fill Payload Dispatched to Extension' : 'Extension Standby (Bridge Broadcast Sent)'}
+              {isExtensionActive ? t('Auto-Fill Payload Dispatched to Extension') : t('Extension Standby (Bridge Broadcast Sent)')}
             </span>
           </div>
           <span className="text-[10px] text-slate-500">Manifest V3</span>
@@ -105,40 +107,40 @@ export default function AutoFillModal() {
         <div className="space-y-3 mb-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-700">
-              Injectable Field Mappings:
+              {t('Injectable Field Mappings')}:
             </span>
             <button
               onClick={handleCopyPayload}
               className="text-[11px] text-slate-500 hover:text-slate-800 flex items-center space-x-1"
             >
               {copied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-              <span>{copied ? 'Copied' : 'Copy JSON'}</span>
+              <span>{copied ? t('Copied') : t('Copy JSON')}</span>
             </button>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200 font-mono">
             <div>
-              <span className="text-slate-400 block text-[10px]">Full Name:</span>
+              <span className="text-slate-400 block text-[10px]">{t('Full Name')}:</span>
               <span className="text-slate-800 font-semibold">{digilockerData?.aadhaar?.full_name || citizen.name}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Aadhaar (e-KYC):</span>
+              <span className="text-slate-400 block text-[10px]">{t('Aadhaar (e-KYC)')}:</span>
               <span className="text-slate-800 font-semibold">{digilockerData?.aadhaar?.uid_masked || citizen.aadhaar_number}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">DOB / Age:</span>
+              <span className="text-slate-400 block text-[10px]">{t('DOB / Age')}:</span>
               <span className="text-slate-800 font-semibold">{digilockerData?.aadhaar?.date_of_birth || "1994-08-15"} ({citizen.age}y)</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Annual Income:</span>
+              <span className="text-slate-400 block text-[10px]">{t('Annual Income')}:</span>
               <span className="text-emerald-700 font-semibold">₹{citizen.annual_income.toLocaleString('en-IN')}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Social Category:</span>
+              <span className="text-slate-400 block text-[10px]">{t('Social Category')}:</span>
               <span className="text-slate-800 font-semibold">{citizen.category}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">State:</span>
+              <span className="text-slate-400 block text-[10px]">{t('State')}:</span>
               <span className="text-slate-800 font-semibold">{citizen.state}</span>
             </div>
           </div>
@@ -159,14 +161,14 @@ export default function AutoFillModal() {
             {submittedAppId ? (
               <>
                 <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-                <span>✓ Application Submitted to Officer Verification Queue</span>
+                <span>{t('✓ Application Submitted to Officer Verification Queue')}</span>
               </>
             ) : isSubmitting ? (
-              <span>Submitting to Officer Queue...</span>
+              <span>{t('Submitting to Officer Queue...')}</span>
             ) : (
               <>
                 <Building className="w-4 h-4 text-orange-300" />
-                <span>Submit to Official Verification Queue (Realtime)</span>
+                <span>{t('Submit to Official Verification Queue (Realtime)')}</span>
               </>
             )}
           </button>
@@ -177,7 +179,7 @@ export default function AutoFillModal() {
             rel="noopener noreferrer"
             className="w-full py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2"
           >
-            <span>Proceed to Official Application Portal</span>
+            <span>{t('Proceed to Official Application Portal')}</span>
             <ExternalLink className="w-4 h-4" />
           </a>
 
@@ -187,7 +189,7 @@ export default function AutoFillModal() {
             rel="noopener noreferrer"
             className="w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-all flex items-center justify-center space-x-2"
           >
-            <span>🧪 Open Sample Government Form (Test Auto-Fill Live)</span>
+            <span>{t('🧪 Open Sample Government Form (Test Auto-Fill Live)')}</span>
             <ArrowUpRight className="w-4 h-4 text-slate-500" />
           </a>
         </div>

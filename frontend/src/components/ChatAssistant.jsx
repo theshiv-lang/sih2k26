@@ -26,7 +26,16 @@ export default function ChatAssistant() {
   const [inputVal, setInputVal] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speakingMsgId, setSpeakingMsgId] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
   const messagesEndRef = useRef(null);
+
+  const handleMicClick = () => {
+    setToastMessage("Voice input simulated for demo purposes.");
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+    setIsVoiceModalOpen(true);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -143,8 +152,27 @@ export default function ChatAssistant() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden font-sans">
+    <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden font-sans relative">
       
+      {/* Voice Simulation Toast Notification */}
+      {toastMessage && (
+        <div className="absolute top-16 inset-x-4 z-30 animate-fade-in">
+          <div className="bg-slate-900 text-white text-xs px-3.5 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center justify-between space-x-2">
+            <div className="flex items-center space-x-2">
+              <Mic className="w-4 h-4 text-orange-400 animate-pulse flex-shrink-0" />
+              <span className="font-medium">{toastMessage}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setToastMessage(null)}
+              className="text-slate-400 hover:text-white text-xs font-bold px-1 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -256,12 +284,12 @@ export default function ChatAssistant() {
       </div>
 
       {/* Input Box & Voice Trigger */}
-      <div className="p-3 bg-white border-t border-slate-200">
+      <div className="p-3 bg-white border-t border-slate-200 sticky bottom-0 pb-safe z-10">
         <form onSubmit={onSubmit} className="flex items-center space-x-2">
           <button
             type="button"
-            onClick={() => setIsVoiceModalOpen(true)}
-            className="p-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-600 border border-orange-200 transition-all flex-shrink-0"
+            onClick={handleMicClick}
+            className="p-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-600 border border-orange-200 transition-all flex-shrink-0 cursor-pointer"
             title="Speak with Bhashini Voice Input"
           >
             <Mic className="w-5 h-5" />

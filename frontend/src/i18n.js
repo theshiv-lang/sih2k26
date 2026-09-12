@@ -29,4 +29,12 @@ i18n
     },
   });
 
+// Broadcast language changes to window for the Chrome Extension MV3 Content Script Bridge
+i18n.on('languageChanged', (newLang) => {
+  if (typeof window !== 'undefined') {
+    window.postMessage({ type: 'SAHAYAK_LANG_CHANGE', lang: newLang, source: 'SAHAYAK_WEB_APP' }, '*');
+    window.dispatchEvent(new CustomEvent('SAHAYAK_LANG_CHANGE', { detail: { lang: newLang } }));
+  }
+});
+
 export default i18n;

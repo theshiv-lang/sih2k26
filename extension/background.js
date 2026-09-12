@@ -48,6 +48,24 @@ chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => 
     });
     return true;
   }
+
+  if (message.type === 'SAHAYAK_LANG_CHANGE') {
+    const lang = message.lang || 'en';
+    chrome.storage.local.set({ sahayak_language: lang }, () => {
+      console.log('[Sahayak SW] Language updated externally to:', lang);
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          if (tab.id) {
+            chrome.tabs.sendMessage(tab.id, { type: 'SAHAYAK_LANG_UPDATED', lang }, () => {
+              chrome.runtime.lastError;
+            });
+          }
+        });
+      });
+      sendResponse({ success: true, lang });
+    });
+    return true;
+  }
 });
 
 // Automatic form injection on tab load / navigation
@@ -109,6 +127,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     currentAutofillSession = null;
     chrome.storage.local.remove(['sahayak_session'], () => {
       sendResponse({ success: true });
+    });
+    return true;
+  }
+
+  if (message.type === 'SAHAYAK_LANG_CHANGE') {
+    const lang = message.lang || 'en';
+    chrome.storage.local.set({ sahayak_language: lang }, () => {
+      console.log('[Sahayak SW] Internal language updated to:', lang);
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          if (tab.id) {
+            chrome.tabs.sendMessage(tab.id, { type: 'SAHAYAK_LANG_UPDATED', lang }, () => {
+              chrome.runtime.lastError;
+            });
+          }
+        });
+      });
+      sendResponse({ success: true, lang });
+    });
+    return true;
+  }
+
+  if (message.type === 'GET_CURRENT_LANGUAGE') {
+    chrome.storage.local.get(['sahayak_language'], (result) => {
+      sendResponse({ lang: result.sahayak_language || 'en' });
     });
     return true;
   }

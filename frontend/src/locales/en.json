@@ -14,6 +14,8 @@
     "switchPersona": "Switch Persona",
     "extensionLinked": "Extension Linked",
     "extensionReady": "Extension Ready",
+    "getExtension": "Get Extension",
+    "extension": "Extension",
     "bhashiniLanguages": "Bhashini AI Languages"
   },
   "home": {
@@ -117,5 +119,16 @@
     "save": "Save",
     "cancel": "Cancel",
     "close": "Close"
-  }
+  },
+  "PM-Kisan Samman Nidhi": "PM-Kisan Samman Nidhi",
+  "Pradhan Mantri Fasal Bima Yojana (PMFBY)": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+  "Kisan Credit Card (KCC) Scheme": "Kisan Credit Card (KCC) Scheme",
+  "PM Krishi Sinchayee Yojana (Per Drop More Crop)": "PM Krishi Sinchayee Yojana (Per Drop More Crop)",
+  "Extension Standby (Bridge Broadcast Sent)": "Extension Standby (Bridge Broadcast Sent)",
+  "Auto-Fill Payload Dispatched to Extension": "Auto-Fill Payload Dispatched to Extension",
+  "Injectable Field Mappings": "Injectable Field Mappings",
+  "Injectable Field Mappings:": "Injectable Field Mappings:",
+  "Submit to Official Verification Queue (Realtime)": "Submit to Official Verification Queue (Realtime)",
+  "Proceed to Official Application Portal": "Proceed to Official Application Portal",
+  "Sahayak Auto-Fill Bridge": "Sahayak Auto-Fill Bridge"
 }

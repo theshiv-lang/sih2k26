@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '../context/AppContext';
-import ExtensionStatusBanner from '../components/ExtensionStatusBanner';
 import AIChatWidget from '../components/AIChatWidget';
 import {
   Sparkles,
@@ -86,14 +85,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="space-y-12 pb-16">
-      
-      {/* Top Extension Announcement */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <ExtensionStatusBanner />
-      </div>
-
-      {/* Hero Section */}
+    <div className="space-y-12 pb-16 pt-4 sm:pt-6">
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
           <div className="text-center max-w-4xl mx-auto space-y-6">
@@ -121,7 +113,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
               <Link
                 to="/login"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-sm shadow-lg shadow-orange-600/25 hover:shadow-orange-600/35 transition-all flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-base sm:text-sm shadow-lg shadow-orange-600/25 hover:shadow-orange-600/35 transition-all flex items-center justify-center space-x-2"
               >
                 <span>{t('home.findSchemesBtn')}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -129,7 +121,7 @@ export default function Home() {
 
               <Link
                 to="/officer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-all border border-slate-700 flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto min-h-[48px] px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-base sm:text-sm shadow-md transition-all border border-slate-700 flex items-center justify-center space-x-2"
               >
                 <Building className="w-4 h-4 text-orange-400" />
                 <span>{t('home.officerPortalBtn')}</span>
@@ -293,20 +285,20 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-orange-700 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">
-                    {scheme.category}
+                    {t(scheme.category)}
                   </span>
                   <span className="text-[10px] text-slate-500 font-medium">
-                    {scheme.tag}
+                    {t(scheme.tag)}
                   </span>
                 </div>
                 <h3 className="text-sm font-extrabold text-slate-900 leading-snug">
-                  {scheme.title}
+                  {t(scheme.title)}
                 </h3>
                 <p className="text-[11px] text-slate-500">
-                  {scheme.ministry}
+                  {t(scheme.ministry)}
                 </p>
                 <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold font-mono">
-                  Benefit: {scheme.benefit}
+                  {t('Benefit')}: {t(scheme.benefit)}
                 </div>
               </div>
 
@@ -317,7 +309,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 flex items-center space-x-1"
                 >
-                  <span>Portal</span>
+                  <span>{t('Portal')}</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
 
@@ -325,8 +317,8 @@ export default function Home() {
                   to="/schemes"
                   className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition-all flex items-center space-x-1"
                 >
-                  <span>Check Eligibility</span>
-                  <ArrowRight className="w-3 h-3 text-orange-400" />
+                  <span>{t('Check Eligibility')}</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>

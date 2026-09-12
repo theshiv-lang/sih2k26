@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Schemes from './pages/Schemes';
 import Vault from './pages/Vault';
 import OfficerDashboard from './pages/OfficerDashboard';
+import ExtensionDemo from './pages/ExtensionDemo';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -75,6 +76,7 @@ export default function App() {
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/schemes" element={<PublicLayout><Schemes /></PublicLayout>} />
             <Route path="/vault" element={<PublicLayout><Vault /></PublicLayout>} />
+            <Route path="/extension" element={<PublicLayout><ExtensionDemo /></PublicLayout>} />
             <Route path="/officer" element={<OfficerDashboard />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

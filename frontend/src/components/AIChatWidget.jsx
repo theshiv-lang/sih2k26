@@ -47,16 +47,20 @@ export default function AIChatWidget() {
         </button>
       </div>
 
-      {/* Slide-Up Chat Drawer */}
+      {/* Slide-Up Chat Drawer / Mobile Sticky Bottom-Sheet */}
       {isOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 w-[94vw] sm:w-[420px] h-[580px] sm:h-[640px] z-50 bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-slide-up font-sans">
+        <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-24 sm:right-6 w-full sm:w-[420px] h-[85vh] sm:h-[640px] max-h-[92vh] sm:max-h-[640px] z-50 bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-slate-200 flex flex-col overflow-hidden animate-slide-up font-sans">
           
           {/* Drawer Header */}
-          <div className="px-4 py-3 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-between border-b border-slate-700">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-orange-600 flex items-center justify-center text-white shadow-sm shadow-orange-500/30">
-                <Bot className="w-4 h-4" />
-              </div>
+          <div className="px-4 py-2.5 sm:py-3 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white border-b border-slate-700">
+            {/* Mobile Drag Notch Handle */}
+            <div className="w-10 h-1 rounded-full bg-slate-500/60 mx-auto mb-2 sm:hidden" />
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-xl bg-orange-600 flex items-center justify-center text-white shadow-sm shadow-orange-500/30">
+                  <Bot className="w-4 h-4" />
+                </div>
               <div>
                 <div className="flex items-center space-x-2">
                   <h3 className="text-xs font-bold leading-tight">{t('schemes.aiGuide')}</h3>
@@ -75,6 +79,7 @@ export default function AIChatWidget() {
             >
               <X className="w-4 h-4" />
             </button>
+            </div>
           </div>
 
           {/* Embedded Full ChatAssistant Component */}

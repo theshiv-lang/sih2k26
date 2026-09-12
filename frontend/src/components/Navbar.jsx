@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '../context/AppContext';
 import useStore from '../store/useStore';
-import { ShieldCheck, Globe, CheckCircle2, ChevronDown, User, Building, Layers, Sparkles, FolderLock, LogIn, Edit3 } from 'lucide-react';
+import { ShieldCheck, Globe, CheckCircle2, ChevronDown, User, Building, Layers, Sparkles, FolderLock, LogIn, Edit3, Chrome } from 'lucide-react';
 import { LANGUAGE_CONFIG } from '../services/bhashini';
 
 export default function Navbar() {
@@ -118,24 +118,16 @@ export default function Navbar() {
               <span className="sm:hidden">{t('nav.desk')}</span>
             </Link>
 
-            {/* Chrome Extension Status */}
-            <div
-              className={`hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
-                isExtensionActive
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                  : 'bg-amber-50 text-amber-700 border-amber-200'
-              }`}
-              title={
-                isExtensionActive
-                  ? 'Sahayak Auto-Fill Extension Linked & Ready'
-                  : 'Extension bridge ready. Load /extension in Chrome'
-              }
+            {/* Get Chrome Extension Button */}
+            <Link
+              to="/extension"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 text-orange-950 border border-orange-200 text-xs font-bold shadow-2xs transition-all flex-shrink-0 group"
+              title="Get Sahayak Autonomous Auto-Fill Chrome Extension (MV3)"
             >
+              <Chrome className="w-3.5 h-3.5 text-orange-600 group-hover:rotate-12 transition-transform" />
+              <span className="hidden sm:inline">{t('nav.getExtension', 'Get Extension')}</span>
               <span className={`w-2 h-2 rounded-full ${isExtensionActive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'}`} />
-              <span className="hidden xl:inline">
-                {isExtensionActive ? t('nav.extensionLinked') : t('nav.extensionReady')}
-              </span>
-            </div>
+            </Link>
 
             {/* Language Selector Dropdown */}
             <div className="relative">
@@ -161,6 +153,7 @@ export default function Navbar() {
                         i18n.changeLanguage(lang.code);
                         if (typeof window !== 'undefined') {
                           localStorage.setItem('sahayak_language', lang.code);
+                          window.postMessage({ type: "SAHAYAK_LANG_CHANGE", lang: lang.code }, "*");
                         }
                         setLanguage(lang.code);
                         setLangMenuOpen(false);
@@ -186,6 +179,7 @@ export default function Navbar() {
           <NavLink to="/" end className={navLinkClass}>{t('nav.home')}</NavLink>
           <NavLink to="/schemes" className={navLinkClass}>{t('nav.schemes')}</NavLink>
           <NavLink to="/vault" className={navLinkClass}>{t('nav.vault')}</NavLink>
+          <NavLink to="/extension" className={navLinkClass}>{t('nav.extension', 'Extension')}</NavLink>
           <NavLink to="/login" className={navLinkClass}>{t('nav.login')}</NavLink>
         </div>
 
